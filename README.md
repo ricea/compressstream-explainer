@@ -15,7 +15,7 @@ ArrayBufferView chunks, and outputs Uint8Array.
 DecompressStream is used to decompress a stream. It accepts
 ArrayBuffer or ArrayBufferView chunks, and outputs Uint8Array.
 
-Both APIs satisfy the concept of a[ transform
+Both APIs satisfy the concept of a [transform
 stream](https://streams.spec.whatwg.org/#ts-model) from the WHATWG
 Streams Standard.
 
@@ -23,7 +23,7 @@ Streams Standard.
 ## Goal
 
 The goal is to provide a JavaScript API for compressing and
-decompressing data in the “gzip” format.
+decompressing data in the "gzip" format.
 
 
 ## Non-goals
@@ -38,8 +38,7 @@ decompressing data in the “gzip” format.
 ### Compress a stream
 
 ```javascript
-const compressedReadableStream = inputReadableStream.pipeThrough(
-  new CompressStream());
+const compressedReadableStream = inputReadableStream.pipeThrough(new CompressStream());
 ```
 
 ### Compress an ArrayBuffer to a Uint8Array
@@ -94,7 +93,7 @@ async function DecompressBlob(blob) {
     We want to be able to offload the work to another thread, which
     cannot be done with a synchronous API.
 
-*   Why not non-Stream API?
+*   Why not a non-streaming API?
 
     Gzip backreferences can span more than one chunk. An API which
     only worked on one buffer at a time could not create
