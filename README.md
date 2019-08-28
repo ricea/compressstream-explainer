@@ -80,6 +80,17 @@ async function DecompressBlob(blob) {
 ```
 
 
+## End-user benefits
+
+Using this API, web developers can compress data to be uploaded, saving
+users time and bandwidth.
+
+As an alternative to this API, it is possible for web developers to bundle
+an implementation of a compression algorithm with their app. However, that
+would have to be downloaded as part of the app, costing the user time and
+bandwidth.
+
+
 ## Considered alternatives
 
 *   Why not simply wrap the zlib API?
@@ -105,5 +116,5 @@ async function DecompressBlob(blob) {
 
 ## References & acknowledgements
 
-Original text by Canon Mukai with contributions from Adam Rice, Domenic Denicola
-and Yutaka Hirano.
+Original text by Canon Mukai with contributions from Adam Rice, Domenic
+Denicola and Yutaka Hirano.
