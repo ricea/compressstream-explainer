@@ -114,6 +114,18 @@ bandwidth.
     flexible.
 
 
+## Future work
+
+There are a number of possible future expansions which may increase the
+utility of the API:
+
+* Other compression algorithms, including "deflate".
+* Options for algorithms, such as setting the compression level.
+* "Low-latency" mode, where compressed data is flushed at the end of each
+  chunk. Currently data is always buffered across chunks. This means many
+  small chunks may be passed in before any compressed data is produced.
+
+
 ## References & acknowledgements
 
 Original text by Canon Mukai with contributions from Adam Rice, Domenic
