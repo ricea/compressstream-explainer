@@ -4,15 +4,15 @@
 
 ## What’s all this then?
 
-The "gzip" compression algorithm is extensively used in the web
-platform, but up until now has not been exposed to JavaScript. Since
-compression is naturally a streaming process, it is a good match for
-the [WHATWG Streams](https://streams.spec.whatwg.org/) API.
+The "gzip" and "deflate" compression algorithms are extensively used in the
+web platform, but up until now have not been exposed to JavaScript. Since
+compression is naturally a streaming process, it is a good match for the
+[WHATWG Streams](https://streams.spec.whatwg.org/) API.
 
-CompressStream is used to compress a stream. It accepts ArrayBuffer or
+CompressionStream is used to compress a stream. It accepts ArrayBuffer or
 ArrayBufferView chunks, and outputs Uint8Array.
 
-DecompressStream is used to decompress a stream. It accepts
+DecompressionStream is used to decompress a stream. It accepts
 ArrayBuffer or ArrayBufferView chunks, and outputs Uint8Array.
 
 Both APIs satisfy the concept of a [transform
@@ -23,29 +23,29 @@ Streams Standard.
 ## Goal
 
 The goal is to provide a JavaScript API for compressing and
-decompressing data in the "gzip" format.
+decompressing data in the "gzip" or "deflate" formats.
 
 
 ## Non-goals
 
-*   Compression formats other than "gzip" will not be supported in the
-    first version of the API.
+*   Compression formats other than "gzip" and "deflate" will not be
+    supported in the first version of the API.
 *   Support for synchronous compression.
 
 
 ## Example code
 
-### Compress a stream
+### Gzip-compress a stream
 
 ```javascript
-const compressedReadableStream = inputReadableStream.pipeThrough(new CompressStream());
+const compressedReadableStream = inputReadableStream.pipeThrough(new CompressionStream('gzip'));
 ```
 
-### Compress an ArrayBuffer to a Uint8Array
+### Deflate-compress an ArrayBuffer to a Uint8Array
 
 ```javascript
 async function compressArrayBuffer(in) {
-  const cs = new CompressStream();
+  const cs = new CompressionStream('deflate');
   const writer = cs.writable.getWriter();
   writer.write(in);
   writer.close();
@@ -69,11 +69,14 @@ async function compressArrayBuffer(in) {
 }
 ```
 
-### Decompress a Blob to a Blob
+### Gzip-decompress a Blob to a Blob
+
+This treats the input as a gzip file regardless of the mime-type. The output
+Blob has an empty mime-type.
 
 ```javascript
 async function DecompressBlob(blob) {
-  const ds = new DecompressStream();
+  const ds = new DecompressionStream('gzip');
   const decompressedStream = blob.stream().pipeThrough(ds);
   return await new Response(decompressedStream).blob();
 }
@@ -96,7 +99,7 @@ bandwidth.
 *   Why not simply wrap the zlib API?
 
     Not all platforms use zlib. Moreover, it is not a web-like API and
-    it’s hard to use. Implementing CompressStream for zlib helps us
+    it’s hard to use. Implementing CompressionStream for zlib helps us
     use it more easily.
 
 *   Why not support synchronous compression?
@@ -113,6 +116,14 @@ bandwidth.
     API can be used to compress a single buffer, so it is more
     flexible.
 
+*   Why not support other formats in the first version?
+
+    Gzip and Deflate are ubiquitous and already shipping in every browser.
+    This means the incremental cost of exposing them is very low. They are
+    used so extensively in the web platform that there is almost zero
+    chance of them ever being removed, so committing to supporting them
+    long-term is safe.
+
 
 ## Future work
 
@@ -120,6 +131,7 @@ There are a number of possible future expansions which may increase the
 utility of the API:
 
 * Other compression algorithms, including "deflate".
+* Implementing new compression algorithms in JavaScript or WASM.
 * Options for algorithms, such as setting the compression level.
 * "Low-latency" mode, where compressed data is flushed at the end of each
   chunk. Currently data is always buffered across chunks. This means many
@@ -129,4 +141,4 @@ utility of the API:
 ## References & acknowledgements
 
 Original text by Canon Mukai with contributions from Adam Rice, Domenic
-Denicola and Yutaka Hirano.
+Denicola, Takeshi Yoshino and Yutaka Hirano.
