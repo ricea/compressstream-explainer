@@ -130,7 +130,7 @@ bandwidth.
 There are a number of possible future expansions which may increase the
 utility of the API:
 
-* Other compression algorithms, including "deflate".
+* Other compression algorithms, including "brotli".
 * Implementing new compression algorithms in JavaScript or WASM.
 * Options for algorithms, such as setting the compression level.
 * "Low-latency" mode, where compressed data is flushed at the end of each
