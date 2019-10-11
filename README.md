@@ -33,6 +33,54 @@ decompressing data in the "gzip" or "deflate" formats.
 *   Support for synchronous compression.
 
 
+## Motivation
+
+Existing libraries can be used to perform compression in the browser, however
+there are a number of benefits to a built-in capability.
+
+*   A built-in API does not need to be downloaded. This is particularly relevant
+    when compression is being used with the goal of reducing bandwidth usage.
+*   Native compression libraries are faster and use less power than JavaScript
+    or WASM libraries.
+*   Ergonomics is improved by having a standard, web-like API. By using streams
+    composability with other web platforms is improved.
+*   The web platform is unusual in not having native support for compression.
+    This API fills that gap.
+
+Why support "zlib" and "deflate" rather than more modern compression formats?
+
+*   An implementation of these formats is already built into all
+    standards-compliant browsers. This makes the incremental cost of exposing
+    APIs to JavaScript tiny.
+*   These formats are incredibly widely used throughout the web platform. This
+    means the risk of browsers ever removing support for them is low. As a
+    result, the maintenance burden from these algorithms is guaranteed to remain
+    small.
+*   Compression ratios achievable with these formats are still competitive for
+    many use cases. Modern formats are often more CPU-efficient, but where the
+    amount of data to be compressed is relatively small, this is not too
+    important. Applications involving huge volumes of data will probably still
+    want to use custom compression algorithms.
+*   Because of the ubiquity of these formats, they are useful in creation of
+    many file types, such as zip, pdf, svgz, and png.
+*   The latest bleeding-edge compression formats are likely to be soon
+    supplanted by new bleeding-edge compression formats. However, it is hard to
+    remove something from the web platform once added. In the worst case,
+    browser vendors could be left maintaining compression libraries that are no
+    longer supported upstream. For this reason, it is best to ship only
+    tried-and-tested algorithms.
+
+
+## Use cases
+
+*   Compressing data for upload.
+*   Compression and decompression for
+    *   Native files
+    *   Network protocols
+    *   In-memory databases
+*   Lazy decompression for downloads.
+
+
 ## Example code
 
 ### Gzip-compress a stream
