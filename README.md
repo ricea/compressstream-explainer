@@ -22,8 +22,9 @@ Streams Standard.
 
 ## Goal
 
-The goal is to provide a JavaScript API for compressing and
-decompressing data in the "gzip" or "deflate" formats.
+The goal is to provide a JavaScript API for compressing and decompressing data
+in the "gzip" ([RFC1952](https://tools.ietf.org/html/rfc1952)) or "deflate"
+([RFC1950](https://www.ietf.org/rfc/rfc1950.txt)) formats.
 
 
 ## Non-goals
@@ -47,7 +48,7 @@ there are a number of benefits to a built-in capability.
 *   The web platform is unusual in not having native support for compression.
     This API fills that gap.
 
-Why support "zlib" and "deflate" rather than more modern compression formats?
+Why support "gzip" and "deflate" rather than more modern compression formats?
 
 *   An implementation of these formats is already built into all
     standards-compliant browsers. This makes the incremental cost of exposing
@@ -178,6 +179,8 @@ bandwidth.
 There are a number of possible future expansions which may increase the
 utility of the API:
 
+* The "deflate-raw" ([RFC1951](https://www.ietf.org/rfc/rfc1951.txt)) format,
+  which is similar to "deflate", but has no headers or footers.
 * Other compression algorithms, including "brotli".
 * Implementing new compression algorithms in JavaScript or WASM.
 * Options for algorithms, such as setting the compression level.
